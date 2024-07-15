@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+<!-- 1. 의존성 주입할 객체 생성 -->
+<bean id="od" class="day0617.di.OracleDAO" scope="singleton"/>
+<!-- 2. method 의존성 주입받을 객체 생성 -->
+<bean id="service" class="day0617.di.ServiceImpl" scope="singleton">
+<property name="dao" ref="od"/>
+</bean>
+
+<!-- factory method -->
+<!-- private 생성자도 호출 가능 
+<bean id="fmService" class="day0618.SingletonServiceImpl"/>
+-->
+<bean id="fmService" class="day0618.SingletonServiceImpl" 
+	factory-method="getInstance">
+	<property name="dao" ref="od"/>
+</bean>
+
+<!-- 정수 injection : type속성을 생략하면 문자열로 Injection된다. -->
+<bean id="intInjection" class="day0618.InjectionTest">
+<constructor-arg value="2024" type="int"/>
+</bean>
+
+<!-- 문자열 injection : type속성에서 String을 사용했을 때 error가 발생하면 full path로 기술 -->
+<bean id="strInjection" class="day0618.InjectionTest">
+<constructor-arg value="김동섭" type="java.lang.String"/>
+</bean>
+
+<!-- List Injection : <list>, <value> -->
+<bean id="listInjection" class="day0618.InjectionTest">
+<constructor-arg>
+	<list>
+		<value type="java.lang.String">자바</value>
+		<value type="java.lang.String">오라클</value>
+		<value type="java.lang.String">JSP</value>
+		<value type="java.lang.String">Spring</value>
+	</list>
+</constructor-arg>
+</bean>
+
+<!-- Map Injection : <map>, <entry>, <key>, <value> -->
+<bean id="mapInjection" class="day0618.InjectionTest">
+<constructor-arg>
+	<map>
+		<entry>
+			<key><value type="java.lang.String">Spring</value></key>
+			<value type="java.lang.String">가벼운 프레임워크</value>
+		</entry>
+		<entry>
+			<key><value type="java.lang.String">Java</value></key>
+			<value type="java.lang.String">완벽한 OOP언어</value>
+		</entry>
+		<entry>
+			<key><value type="java.lang.String">오라클</value></key>
+			<value type="java.lang.String">대용량 DBMS</value>
+		</entry>
+	</map>
+</constructor-arg>
+</bean>
+
+
+
+</beans>
